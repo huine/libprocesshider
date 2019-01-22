@@ -3,7 +3,7 @@
 Hide a process under Linux using the ld preloader.
 Based on https://github.com/gianlucaborello/libprocesshider
 
-My version hide all process of an user by his uid under Linux.
+My version hides all process of an user by his uid under Linux.
 
 Full tutorial available at https://sysdigcloud.com/hiding-linux-processes-for-fun-and-profit/
 
